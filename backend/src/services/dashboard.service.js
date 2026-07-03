@@ -1,5 +1,6 @@
 const Device = require("../models/Device");
 const Alert = require("../models/Alert");
+const RoomService = require("./room.service");
 
 class DashboardService {
 
@@ -11,24 +12,17 @@ class DashboardService {
             resolved: false
         }).sort({ createdAt: -1 });
 
-        let totalPower = 0;
+        const rooms = await RoomService.getAllRooms();
+
+        const totalPower = rooms.reduce(
+            (sum, room) => sum + room.totalPower,
+            0
+        );
 
         const roomPower = {};
 
-        devices.forEach(device => {
-
-            totalPower += device.currentPower;
-
-            const roomName = device.room.name;
-
-            if (!roomPower[roomName]) {
-
-                roomPower[roomName] = 0;
-
-            }
-
-            roomPower[roomName] += device.currentPower;
-
+        rooms.forEach((room) => {
+            roomPower[room.name] = room.totalPower;
         });
 
         return {

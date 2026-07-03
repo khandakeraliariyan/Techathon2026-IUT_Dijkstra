@@ -1,9 +1,38 @@
 import Navbar from "../components/layout/Navbar";
 import KpiCard from "../components/cards/KpiCard";
 
+import useDashboard from "../hooks/useDashboard";
+
 const Dashboard = () => {
+
+    const { dashboard, loading, error } = useDashboard();
+
+    if (loading) {
+
+        return (
+            <div className="flex justify-center items-center h-screen bg-slate-950 text-white">
+                Loading Dashboard...
+            </div>
+        );
+
+    }
+
+    if (error) {
+
+        return (
+            <div className="flex justify-center items-center h-screen bg-slate-950 text-red-500">
+                {error}
+            </div>
+        );
+
+    }
+
+    const activeDevices = dashboard.devices.filter(device => device.status).length;
+
     return (
+
         <>
+
             <Navbar />
 
             <main className="p-8 space-y-8">
@@ -24,30 +53,33 @@ const Dashboard = () => {
 
                     <KpiCard
                         title="Total Power"
-                        value="0"
+                        value={dashboard.totalPower}
                         unit="W"
                     />
 
                     <KpiCard
                         title="Active Devices"
-                        value="0"
+                        value={activeDevices}
                     />
 
                     <KpiCard
                         title="Rooms"
-                        value="3"
+                        value={dashboard.rooms.length}
                     />
 
                     <KpiCard
                         title="Active Alerts"
-                        value="0"
+                        value={dashboard.alerts.length}
                     />
 
                 </section>
 
             </main>
+
         </>
+
     );
+
 };
 
 export default Dashboard;

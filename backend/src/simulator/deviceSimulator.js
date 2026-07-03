@@ -1,5 +1,6 @@
 const Device = require("../models/Device");
 const deviceService = require("../services/device.service");
+const AlertService = require("../services/alert.service");
 
 const startSimulator = async (io) => {
 
@@ -30,6 +31,8 @@ const startSimulator = async (io) => {
                     lastChanged: new Date()
 
                 });
+
+            await AlertService.checkAfterHours();
 
             console.log(
                 `${updatedDevice.name} -> ${updatedDevice.status ? "ON" : "OFF"}`

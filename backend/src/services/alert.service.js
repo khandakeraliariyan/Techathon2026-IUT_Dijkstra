@@ -31,6 +31,54 @@ class AlertService {
 
     }
 
+    async checkAfterHours() {
+
+        const hour = new Date().getHours();
+
+        if (hour >= 9 && hour < 17) {
+
+            return;
+
+        }
+
+        const activeDevices = await Device.find({
+            status: true
+        }).populate("room");
+
+        for (const device of activeDevices) {
+
+            const exists = await Alert.findOne({
+
+                resolved: false,
+
+                type: "AFTER_HOURS",
+
+                message: {
+                    $regex: device.name
+                }
+
+            });
+
+            if (exists) continue;
+
+            await Alert.create({
+
+                type: "AFTER_HOURS",
+
+                title: "Device Active After Office Hours",
+
+                message: `${device.name} in ${device.room.name} is still ON.`,
+
+                room: device.room._id,
+
+                severity: "HIGH"
+
+            });
+
+        }
+
+    }
+
 }
 
 module.exports = new AlertService();

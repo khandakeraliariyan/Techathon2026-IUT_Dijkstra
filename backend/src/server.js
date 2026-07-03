@@ -6,24 +6,36 @@ dotenv.config();
 const app = require("./app");
 const connectDB = require("./config/db");
 
+const { initializeSocket } = require("./sockets/socket");
+
+const startSimulator = require("./simulator/deviceSimulator");
+
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
+
     try {
-        // Connect Database
+
         await connectDB();
 
-        // Create HTTP Server
         const server = http.createServer(app);
 
+        const io = initializeSocket(server);
+
+        startSimulator(io);
+
         server.listen(PORT, () => {
-            console.log(`🚀 Server running on port ${PORT}`);
+
+            console.log(`🚀 Server running on ${PORT}`);
+
         });
 
-    } catch (error) {
-        console.error(error);
-        process.exit(1);
+    } catch (err) {
+
+        console.log(err);
+
     }
+
 };
 
 startServer();

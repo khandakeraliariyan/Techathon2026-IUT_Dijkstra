@@ -1,6 +1,7 @@
 import Navbar from "../components/layout/Navbar";
 import KpiCard from "../components/cards/KpiCard";
 import Loader from "../components/common/Loader";
+import OfficeLayout from "../components/office/OfficeLayout";
 
 import useDashboard from "../hooks/useDashboard";
 
@@ -72,6 +73,8 @@ const Dashboard = () => {
                         value={dashboard.alerts.length}
                         color="text-red-400"
                     />
+
+                    <OfficeLayout rooms={dashboard.rooms} />
 
                 </section>
 

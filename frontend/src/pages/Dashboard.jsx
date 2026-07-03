@@ -2,18 +2,23 @@ import Navbar from "../components/layout/Navbar";
 import Loader from "../components/common/Loader";
 
 import KpiCard from "../components/cards/KpiCard";
+
 import OfficeLayout from "../components/office/OfficeLayout";
+import AlertPanel from "../components/alerts/AlertPanel";
 import PowerChart from "../components/charts/PowerChart";
 import DeviceGrid from "../components/devices/DeviceGrid";
-import AlertPanel from "../components/alerts/AlertPanel";
+
 import AnalyticsCard from "../components/dashboard/AnalyticsCard";
+import AIInsight from "../components/insights/AIInsight";
 
 import useDashboard from "../hooks/useDashboard";
 import useAnalytics from "../hooks/useAnalytics";
+import useInsight from "../hooks/useInsight";
 
 import { updateDeviceStatus } from "../services/device.service";
 
 const Dashboard = () => {
+
     const {
         dashboard,
         loading,
@@ -22,6 +27,11 @@ const Dashboard = () => {
     } = useDashboard();
 
     const analytics = useAnalytics();
+
+    const {
+        insight,
+        loading: insightLoading,
+    } = useInsight();
 
     if (loading) {
         return <Loader />;
@@ -56,17 +66,23 @@ const Dashboard = () => {
         <>
             <Navbar />
 
-            <main className="bg-slate-950 min-h-screen p-8 space-y-8">
+            <main className="min-h-screen bg-slate-950 p-8 space-y-8">
+
+                {/* Header */}
 
                 <section>
+
                     <h1 className="text-4xl font-bold">
                         Smart Office Dashboard
                     </h1>
 
                     <p className="text-slate-400 mt-2">
-                        Real-Time Office Energy Monitoring System
+                        Real-Time Energy Monitoring System
                     </p>
+
                 </section>
+
+                {/* KPI Cards */}
 
                 <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
@@ -97,12 +113,16 @@ const Dashboard = () => {
 
                 </section>
 
+                {/* Office Layout + Alerts */}
+
                 <section className="grid xl:grid-cols-3 gap-6">
 
                     <div className="xl:col-span-2">
+
                         <OfficeLayout
                             rooms={dashboard.rooms}
                         />
+
                     </div>
 
                     <AlertPanel
@@ -111,14 +131,20 @@ const Dashboard = () => {
 
                 </section>
 
+                {/* Power Chart */}
+
                 <PowerChart
                     history={dashboard.powerHistory}
                 />
+
+                {/* Device Grid */}
 
                 <DeviceGrid
                     devices={dashboard.devices}
                     onToggle={handleToggle}
                 />
+
+                {/* Analytics */}
 
                 <section>
 
@@ -154,6 +180,13 @@ const Dashboard = () => {
                     </div>
 
                 </section>
+
+                {/* AI Insight */}
+
+                <AIInsight
+                    insight={insight}
+                    loading={insightLoading}
+                />
 
             </main>
         </>

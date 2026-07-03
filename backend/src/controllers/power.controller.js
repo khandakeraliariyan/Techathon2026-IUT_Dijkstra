@@ -1,22 +1,35 @@
 const PowerService = require("../services/power.service");
-
 const ApiResponse = require("../utils/apiResponse");
-
 const asyncHandler = require("../utils/asyncHandler");
 
 const getPowerUsage = asyncHandler(async (req, res) => {
 
     const data = await PowerService.getCurrentPowerUsage();
 
-    res.status(200).json(
+    res.json(
+        new ApiResponse(
+            true,
+            "Current power usage",
+            data
+        )
+    );
+
+});
+
+const getPowerHistory = asyncHandler(async (req, res) => {
+
+    const history =
+        await PowerService.getPowerHistory();
+
+    res.json(
 
         new ApiResponse(
 
             true,
 
-            "Power usage fetched successfully",
+            "Power history",
 
-            data
+            history
 
         )
 
@@ -26,6 +39,8 @@ const getPowerUsage = asyncHandler(async (req, res) => {
 
 module.exports = {
 
-    getPowerUsage
+    getPowerUsage,
+
+    getPowerHistory
 
 };

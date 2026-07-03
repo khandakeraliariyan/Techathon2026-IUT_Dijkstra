@@ -1,5 +1,6 @@
 import Navbar from "../components/layout/Navbar";
 import KpiCard from "../components/cards/KpiCard";
+import Loader from "../components/common/Loader";
 
 import useDashboard from "../hooks/useDashboard";
 
@@ -9,11 +10,7 @@ const Dashboard = () => {
 
     if (loading) {
 
-        return (
-            <div className="flex justify-center items-center h-screen bg-slate-950 text-white">
-                Loading Dashboard...
-            </div>
-        );
+        return <Loader />;
 
     }
 

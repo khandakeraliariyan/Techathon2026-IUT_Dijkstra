@@ -1,22 +1,52 @@
 # Smart Office Energy Monitoring System
 
-This repository contains a full-stack smart office monitoring application built for the IUT RS Techathon. The system combines a live React dashboard with a Node.js backend to track room activity, device power use, alerts, analytics, and AI-generated office insights in real time.
+## Project Overview
 
-## Overview
+Smart Office Energy Monitoring System is a full-stack web application for monitoring office energy consumption, room activity, device status, alerts, analytics, and AI-generated operational insights in real time.
 
-The project is split into two main parts:
+The project was built for the IUT RS Techathon. It combines a React dashboard with a Node.js backend, MongoDB persistence, Socket.IO live updates, background simulation jobs, and optional Gemini-powered AI summaries.
 
-- Frontend: a Vite + React dashboard for visualizing office energy usage and live alerts
-- Backend: an Express + MongoDB API with Socket.IO updates, device simulation, and background scheduling
+## Project Links
+
+- Live demo:
+- Video demo:
+- Presentation:
+- Repository:
+- Backend deployment:
+- Frontend deployment:
+
+## Problem Statement
+
+Modern offices often waste electricity because lights, fans, air conditioners, and other devices remain active when rooms are empty or when usage patterns are inefficient. Facility teams need a simple way to observe device activity, understand room-level power consumption, identify unusual usage, and respond to alerts quickly.
+
+## Proposed Solution
+
+This system provides a centralized smart office dashboard where users can:
+
+- View real-time room and device status
+- Monitor total and historical power usage
+- Track alert conditions
+- Analyze office energy patterns
+- Receive AI-generated insight summaries
+- Use simulated smart-device data for demonstration and testing
+
+The backend stores office data in MongoDB, runs scheduled jobs, simulates device activity, and broadcasts live events to the frontend through Socket.IO.
 
 ## Key Features
 
-- Live energy and device monitoring dashboard
-- Room and device management
-- Real-time alert updates through Socket.IO
-- Historical power analytics and charts
-- AI-powered office insights (Gemini-based when configured)
-- Automated device simulation and scheduler jobs
+- Real-time office energy monitoring dashboard
+- Room-wise device organization
+- Device status tracking and status update API
+- Live Socket.IO updates for devices, alerts, power, and dashboard data
+- Power usage summary and historical power data
+- Analytics view for usage trends and metrics
+- AI insight endpoint with Gemini support when configured
+- Fallback insight summary when Gemini is not configured
+- Alert listing and alert update broadcasting
+- Device simulation for demo environments
+- Background scheduler for alert checks and power snapshots
+- Optional Discord bot integration for office-related queries and notifications
+- Responsive React interface built with Tailwind CSS
 
 ## Tech Stack
 

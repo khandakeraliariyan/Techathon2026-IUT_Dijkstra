@@ -7,4 +7,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  preview: {
+    allowedHosts: ["smart-office-energy-monitor-system-web.onrender.com"],
+  },
 });

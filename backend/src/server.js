@@ -26,7 +26,7 @@ const startServer = async () => {
 
         startSimulator(io);
 
-        startScheduler();
+        startScheduler(io);
 
         server.on("error", (error) => {
             if (error.code === "EADDRINUSE") {

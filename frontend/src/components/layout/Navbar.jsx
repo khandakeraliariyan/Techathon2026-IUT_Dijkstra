@@ -5,39 +5,42 @@ const Navbar = () => {
 
     return (
 
-        <nav className="bg-slate-900 border-b border-slate-800 px-8 py-4 flex justify-between items-center">
+        <nav className="sticky top-0 z-20 border-b border-white/10 bg-slate-950/75 px-4 py-4 backdrop-blur-xl sm:px-6 lg:px-8">
 
-            <div className="flex items-center gap-3">
+            <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
 
-                <FaBolt className="text-yellow-400 text-2xl" />
+                <div className="flex items-center gap-3">
 
-                <div>
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-amber-400/20 bg-amber-400/10 shadow-[0_0_30px_rgba(250,204,21,0.18)]">
+                        <FaBolt className="text-amber-300 text-lg" />
+                    </div>
 
-                    <h1 className="text-xl font-bold">
+                    <div>
 
-                        Smart Office Monitor
+                        <h1 className="text-lg font-semibold tracking-tight text-slate-50 sm:text-xl">
 
-                    </h1>
+                            Smart Office Monitor
 
-                    <p className="text-xs text-slate-400">
+                        </h1>
 
-                        Real-Time Energy Monitoring
+                        <p className="text-xs text-slate-400 sm:text-sm">
 
-                    </p>
+                            Real-time energy monitoring and device control
+
+                        </p>
+
+                    </div>
 
                 </div>
 
-            </div>
+                <div className="flex items-center gap-2 rounded-full border border-emerald-400/15 bg-emerald-400/10 px-3 py-2 text-sm text-emerald-300">
 
-            <div className="flex items-center gap-2">
+                    <MdCircle className="animate-pulse text-emerald-400" />
 
-                <MdCircle className="text-green-500 animate-pulse" />
+                    <span className="font-medium">Live</span>
 
-                <span className="text-sm text-slate-400">
+                </div>
 
-                    Live
-
-                </span>
 
             </div>
 

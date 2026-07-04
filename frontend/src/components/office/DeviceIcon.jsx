@@ -10,11 +10,11 @@ const DeviceIcon = ({ device }) => {
 
             <FaLightbulb
                 className={`
-                    text-5xl
+                    text-4xl
                     transition-all
                     duration-500
                     ${isOn
-                        ? "text-yellow-400 drop-shadow-[0_0_18px_#facc15]"
+                        ? "text-amber-300 drop-shadow-[0_0_18px_rgba(251,191,36,0.55)]"
                         : "text-slate-600"
                     }
                 `}
@@ -28,12 +28,12 @@ const DeviceIcon = ({ device }) => {
 
         <FaFan
             className={`
-                text-5xl
+                text-4xl
                 transition-all
                 duration-500
 
                 ${isOn
-                    ? "text-cyan-400 animate-[spin_1.8s_linear_infinite]"
+                    ? "text-cyan-300 animate-[spin_1.8s_linear_infinite] drop-shadow-[0_0_18px_rgba(34,211,238,0.35)]"
                     : "text-slate-600"
                 }
             `}

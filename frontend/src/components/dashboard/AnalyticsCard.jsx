@@ -2,15 +2,15 @@ const AnalyticsCard = ({ title, value, unit }) => {
 
     return (
 
-        <div className="bg-slate-900 rounded-xl border border-slate-800 p-6">
+        <div className="rounded-2xl border border-white/10 bg-slate-950/55 p-5 shadow-[0_12px_30px_rgba(2,6,23,0.25)] backdrop-blur-sm">
 
-            <p className="text-slate-400">
+            <p className="text-xs font-medium uppercase tracking-[0.22em] text-slate-400">
 
                 {title}
 
             </p>
 
-            <h2 className="text-3xl font-bold mt-4">
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-50">
 
                 {value}
 

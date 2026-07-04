@@ -92,6 +92,32 @@ if (!token) {
         return embed;
     };
 
+    const buildRoomStatusSummary = (rooms = []) => {
+        const summaries = rooms
+            .filter((room) => room?.name)
+            .map((room) => {
+                const devices = Array.isArray(room?.devices) ? room.devices : [];
+                const fansOn = devices.filter((device) => device?.type === "Fan" && device?.status).length;
+                const lightsOn = devices.filter((device) => device?.type === "Light" && device?.status).length;
+
+                if (fansOn === 0 && lightsOn === 0) {
+                    return `🏠 ${room.name}\n   • All systems idle`;
+                }
+
+                const parts = [];
+                if (fansOn > 0) {
+                    parts.push(`🌀 ${fansOn} ${fansOn === 1 ? "fan" : "fans"} ON`);
+                }
+                if (lightsOn > 0) {
+                    parts.push(`💡 ${lightsOn} ${lightsOn === 1 ? "light" : "lights"} ON`);
+                }
+
+                return `🏠 ${room.name}\n   • ${parts.join(" • ")}`;
+            });
+
+        return summaries.join("\n");
+    };
+
     const handleCommand = async (message, command, args) => {
         const baseUrl = `${apiBaseUrl}/api/v1`;
 
@@ -139,7 +165,7 @@ if (!token) {
             if (command === "rooms") {
                 const response = await axios.get(`${baseUrl}/rooms`);
                 const rooms = response?.data?.data || [];
-                const fields = rooms.map((room) => ({ name: room?.name || "Unnamed room", value: `Capacity: ${room?.capacity ?? "N/A"}`, inline: true }));
+                const fields = rooms.map((room) => ({ name: room?.name || "Unnamed room", value: `Devices: ${room?.devices?.length ?? 0} • Power: ${room?.totalPower ?? 0}W`, inline: true }));
                 await message.reply({ embeds: [buildDiscordEmbed("🏠 Rooms", "Current office rooms", 0xF59E0B, fields, "Room status")] });
                 return;
             }
@@ -210,30 +236,21 @@ if (!token) {
             }
 
             if (command === "status") {
-                const [dashboardRes, powerRes, alertsRes, devicesRes] = await Promise.all([
+                const [roomsRes, dashboardRes] = await Promise.all([
+                    axios.get(`${baseUrl}/rooms`),
                     axios.get(`${baseUrl}/dashboard`),
-                    axios.get(`${baseUrl}/power`),
-                    axios.get(`${baseUrl}/alerts`),
-                    axios.get(`${baseUrl}/devices`),
                 ]);
+                const rooms = roomsRes?.data?.data || [];
                 const dashboard = dashboardRes?.data?.data || {};
-                const power = powerRes?.data?.data || {};
-                const alerts = alertsRes?.data?.data || [];
-                const devices = devicesRes?.data?.data || [];
                 const customSummary = args.join(" ").trim();
+                const summaryText = customSummary || buildRoomStatusSummary(rooms);
                 const fields = [
-                    { name: "System", value: "🟢 Online", inline: true },
-                    { name: "Devices", value: `${devices.length}`, inline: true },
+                    { name: "Devices", value: `${dashboard.devices?.length ?? 0}`, inline: true },
                     { name: "Active", value: `${dashboard.devices?.filter((d) => d.status).length ?? 0}`, inline: true },
-                    { name: "Alerts", value: `${alerts.length}`, inline: true },
-                    { name: "Power", value: `${power.totalPower ?? 0}W`, inline: true },
+                    { name: "Rooms", value: `${rooms.length}`, inline: true },
                 ];
 
-                if (customSummary) {
-                    fields.unshift({ name: "Summary", value: customSummary, inline: false });
-                }
-
-                await message.reply({ embeds: [buildDiscordEmbed("🟢 Smart Office Status", customSummary ? "Live status update" : "Current system summary", 0x22C55E, fields, "Status overview")] });
+                await message.reply({ embeds: [buildDiscordEmbed("🟢 Smart Office Status", summaryText.replace(/\n/g, "\n"), 0x22C55E, fields, "Status overview")] });
                 return;
             }
 
@@ -258,7 +275,6 @@ if (!token) {
                 }
 
                 const fields = [
-                    { name: "Capacity", value: `${room.capacity ?? "N/A"}`, inline: true },
                     { name: "Devices", value: `${room.devices?.length ?? 0}`, inline: true },
                     { name: "Power", value: `${room.totalPower ?? 0}W`, inline: true },
                 ];
@@ -267,20 +283,39 @@ if (!token) {
             }
 
             if (command === "usage") {
-                const [dashboardRes, analyticsRes, powerRes] = await Promise.all([
+                const [dashboardRes, powerRes] = await Promise.all([
                     axios.get(`${baseUrl}/dashboard`),
-                    axios.get(`${baseUrl}/analytics`),
                     axios.get(`${baseUrl}/power`),
                 ]);
                 const dashboard = dashboardRes?.data?.data || {};
-                const analytics = analyticsRes?.data?.data || {};
                 const power = powerRes?.data?.data || {};
+
+                // Total Power = sum of all device powerRatings (max capacity)
+                const allDevices = dashboard.devices || [];
+                const totalPowerRating = allDevices.reduce((sum, d) => sum + (d.powerRating ?? 0), 0);
+
+                // Today's Estimated Usage from power history
+                const historyRes = await axios.get(`${baseUrl}/power/history`);
+                const logs = historyRes?.data?.data || [];
+                const now = new Date();
+                const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const todayLogs = logs.filter((log) => new Date(log.createdAt) >= startOfDay);
+
+                let estimatedUsage = "0 Wh";
+                if (todayLogs.length > 0) {
+                    const avgPower = todayLogs.reduce((sum, log) => sum + (log.totalPower ?? 0), 0) / todayLogs.length;
+                    // Each log is ~1 minute apart, so total energy = avgPower * (number of intervals) / 60 hours
+                    const hoursElapsed = todayLogs.length / 60;
+                    const usageWh = Math.round(avgPower * hoursElapsed);
+                    estimatedUsage = usageWh >= 1000 ? `${(usageWh / 1000).toFixed(2)} kWh` : `${usageWh} Wh`;
+                }
+
                 const customUsage = args.join(" ").trim();
                 const fields = [
                     { name: "Current Power", value: `${power.totalPower ?? 0}W`, inline: true },
-                    { name: "Average Power", value: `${analytics.averagePower ?? 0}W`, inline: true },
-                    { name: "Peak Power", value: `${analytics.peakPower ?? 0}W`, inline: true },
-                    { name: "Active Devices", value: `${dashboard.devices?.filter((d) => d.status).length ?? 0}`, inline: true },
+                    { name: "Total Power", value: `${totalPowerRating}W`, inline: true },
+                    { name: "Today's Est. Usage", value: estimatedUsage, inline: true },
+                    { name: "Active Devices", value: `${allDevices.filter((d) => d.status).length}`, inline: true },
                 ];
 
                 if (customUsage) {
@@ -348,32 +383,20 @@ if (!token) {
     };
 
     const handledMessages = new Set();
-    const recentCommands = new Map();
 
     client.on(Events.MessageCreate, async (message) => {
         if (message.author.bot) return;
 
+        // Use message.id as the dedup key — it's a unique snowflake per message,
+        // so even if the event fires multiple times or multiple instances exist,
+        // only the first one to process it will reply.
+        if (handledMessages.has(message.id)) return;
+        handledMessages.add(message.id);
+        setTimeout(() => handledMessages.delete(message.id), 30000);
+
         const content = message.content?.trim() || "";
         const parsed = parseIncomingMessage(content);
         if (!parsed) return;
-
-        const messageKey = `${message.guildId || "dm"}:${message.channelId}:${message.author.id}:${parsed.command}:${parsed.args.join(" ")}`;
-        const now = Date.now();
-        const lastSeen = recentCommands.get(messageKey);
-
-        if (lastSeen && now - lastSeen < 4000) {
-            return;
-        }
-
-        recentCommands.set(messageKey, now);
-        setTimeout(() => recentCommands.delete(messageKey), 5000);
-
-        if (handledMessages.has(messageKey)) {
-            return;
-        }
-
-        handledMessages.add(messageKey);
-        setTimeout(() => handledMessages.delete(messageKey), 5000);
 
         await handleCommand(message, parsed.command, parsed.args);
     });

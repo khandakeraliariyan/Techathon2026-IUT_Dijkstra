@@ -12,23 +12,23 @@ const PowerMeter = ({ rooms, roomPower = {}, totalPower = 0, lastUpdated }) => {
     const lightCount = rooms.reduce((sum, room) => sum + room.devices.filter((device) => device.type === "Light").length, 0);
 
     return (
-        <section className="glass-panel relative flex flex-col overflow-hidden rounded-[1.75rem] border-cyan-400/15 p-5 sm:p-6">
+        <section className="glass-panel relative flex flex-col overflow-hidden rounded-2xl border-cyan-400/15 px-6 py-7 sm:px-8 sm:py-8">
             <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-cyan-400/15 blur-[80px]" />
 
-            <div className="relative flex items-start justify-between gap-4">
+            <div className="relative flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:justify-between sm:text-left">
                 <div>
                     <p className="eyebrow text-cyan-200/80">
                         Live Power Meter
                     </p>
-                    <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-50" style={{ fontFamily: "var(--font-display)" }}>
-                        {totalPower}<span className="text-lg text-slate-400">W</span>
+                    <h2 className="text-primary mt-2 text-3xl font-extrabold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
+                        {totalPower}<span className="text-muted text-lg">W</span>
                     </h2>
-                    <p className="mt-1 text-sm text-slate-400">
+                    <p className="text-muted mt-1 text-sm">
                         Total office draw across all connected devices
                     </p>
                 </div>
 
-                <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-3 py-2 text-right">
+                <div className="rounded-xl border border-emerald-400/20 bg-emerald-400/10 px-5 py-4 text-center sm:text-right">
                     <p className="text-[10px] uppercase tracking-[0.22em] text-emerald-200/80">
                         Status
                     </p>
@@ -42,23 +42,23 @@ const PowerMeter = ({ rooms, roomPower = {}, totalPower = 0, lastUpdated }) => {
                 </div>
             </div>
 
-            <div className="relative mt-5 rounded-2xl border border-white/8 bg-white/[0.03] p-4">
-                <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-slate-500">
+            <div className="border-muted surface-muted relative mt-6 rounded-xl border px-5 py-5 text-center sm:px-6 sm:py-6">
+                <div className="text-faint flex flex-col items-center gap-1 text-xs uppercase tracking-[0.22em] sm:flex-row sm:justify-between sm:gap-0">
                     <span>Room split</span>
                     <span>{lastUpdated ? new Date(lastUpdated).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "Auto refresh"}</span>
                 </div>
 
-                <div className="mt-4 space-y-4">
+                <div className="mt-5 space-y-5">
                     {roomEntries.map((room, index) => {
                         const width = Math.max((room.value / maxValue) * 100, room.value > 0 ? 16 : 8);
 
                         return (
                             <div key={room.name} className="space-y-2">
                                 <div className="flex items-center justify-between gap-3 text-sm">
-                                    <span className="font-medium text-slate-200">{room.name}</span>
-                                    <span className="font-mono text-xs text-slate-400">{room.value}W</span>
+                                    <span className="text-secondary font-medium">{room.name}</span>
+                                    <span className="text-muted font-mono text-xs">{room.value}W</span>
                                 </div>
-                                <div className="h-2.5 overflow-hidden rounded-full bg-white/5">
+                                <div className="surface-soft h-2.5 overflow-hidden rounded-full">
                                     <motion.div
                                         initial={{ width: 0 }}
                                         animate={{ width: `${width}%` }}
@@ -72,22 +72,22 @@ const PowerMeter = ({ rooms, roomPower = {}, totalPower = 0, lastUpdated }) => {
                 </div>
             </div>
 
-            <div className="relative mt-5 grid grid-cols-3 gap-3 text-center">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-4">
-                    <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500">Rooms</p>
-                    <p className="mt-2 text-lg font-bold text-slate-50">{rooms.length}</p>
+            <div className="relative mt-6 grid grid-cols-3 gap-4 text-center">
+                <div className="border-subtle surface-muted rounded-xl border px-4 py-5">
+                    <p className="text-faint text-[10px] uppercase tracking-[0.22em]">Rooms</p>
+                    <p className="text-primary mt-2 text-lg font-bold">{rooms.length}</p>
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-4">
-                    <p className="flex items-center justify-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-slate-500">
+                <div className="border-subtle surface-muted rounded-xl border px-4 py-5">
+                    <p className="text-faint flex items-center justify-center gap-1.5 text-[10px] uppercase tracking-[0.22em]">
                         <FaFan className="text-cyan-300/70" /> Fans
                     </p>
-                    <p className="mt-2 text-lg font-bold text-slate-50">{fanCount}</p>
+                    <p className="text-primary mt-2 text-lg font-bold">{fanCount}</p>
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-4">
-                    <p className="flex items-center justify-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-slate-500">
+                <div className="border-subtle surface-muted rounded-xl border px-4 py-5">
+                    <p className="text-faint flex items-center justify-center gap-1.5 text-[10px] uppercase tracking-[0.22em]">
                         <FaLightbulb className="text-amber-300/70" /> Lights
                     </p>
-                    <p className="mt-2 text-lg font-bold text-slate-50">{lightCount}</p>
+                    <p className="text-primary mt-2 text-lg font-bold">{lightCount}</p>
                 </div>
             </div>
         </section>

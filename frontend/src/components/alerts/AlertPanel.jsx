@@ -9,19 +9,19 @@ const listMotion = {
 
 const AlertPanel = ({ alerts }) => {
     return (
-        <section className="glass-panel relative overflow-hidden rounded-[1.75rem] p-5 sm:p-6">
+        <section className="glass-panel relative overflow-hidden rounded-2xl px-6 py-7 sm:px-8 sm:py-8">
             <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-rose-500/10 blur-[80px]" />
 
-            <div className="relative mb-5 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
+            <div className="relative mb-6 flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
+                <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:gap-3">
                     <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-rose-400/20 bg-rose-400/10 text-rose-300">
                         <FaTriangleExclamation />
                     </span>
-                    <div>
+                    <div className="text-center sm:text-left">
                         <h2 className="section-title text-xl sm:text-2xl">
                             Active Alerts
                         </h2>
-                        <p className="mt-0.5 text-sm text-slate-400">
+                        <p className="text-muted mt-0.5 text-sm">
                             Timestamped anomalies that need attention
                         </p>
                     </div>
@@ -36,10 +36,10 @@ const AlertPanel = ({ alerts }) => {
                 variants={listMotion}
                 initial="hidden"
                 animate="show"
-                className="relative space-y-4"
+                className="relative space-y-5"
             >
                 {alerts.length === 0 ? (
-                    <div className="rounded-2xl border border-dashed border-white/10 bg-white/[0.02] p-8 text-center text-sm text-slate-400">
+                    <div className="border-subtle surface-empty text-muted rounded-xl border border-dashed px-7 py-9 text-center text-sm">
                         All clear — no active alerts right now.
                     </div>
                 ) : (

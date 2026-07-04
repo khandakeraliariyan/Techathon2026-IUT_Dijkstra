@@ -1,4 +1,5 @@
 const Device = require("../models/Device");
+const AlertService = require("./alert.service");
 
 class DeviceService {
 
@@ -26,7 +27,13 @@ class DeviceService {
 
         await device.save();
 
-        return device.populate("room");
+        const updatedDevice = await device.populate("room");
+
+        if (!status) {
+            await AlertService.resolveAfterHoursForDevice(updatedDevice);
+        }
+
+        return updatedDevice;
 
     }
 

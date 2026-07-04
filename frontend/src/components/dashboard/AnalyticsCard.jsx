@@ -14,23 +14,22 @@ const AnalyticsCard = ({ title, value, unit, accent = "brand" }) => {
         <motion.div
             whileHover={{ y: -3 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="glass-card relative overflow-hidden rounded-2xl p-5"
+            className="glass-card metric-card relative overflow-hidden rounded-2xl px-6 py-6 sm:px-7 sm:py-7"
         >
             <div className={`pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full blur-2xl ${theme.glow}`} />
 
-            <div className="relative flex items-center justify-between">
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
+            <div className="relative flex h-full flex-col items-center justify-center gap-4 text-center">
+                <span className={`h-2 w-2 rounded-full ${theme.dot}`} />
+                <p className="text-muted text-xs font-semibold uppercase tracking-[0.22em]">
                     {title}
                 </p>
-                <span className={`h-2 w-2 rounded-full ${theme.dot}`} />
+                <h2 className={`text-3xl font-extrabold tracking-tight ${theme.text}`} style={{ fontFamily: "var(--font-display)" }}>
+                    {value}
+                    <span className="text-faint ml-1 text-base font-semibold">
+                        {unit}
+                    </span>
+                </h2>
             </div>
-
-            <h2 className={`relative mt-4 text-3xl font-extrabold tracking-tight ${theme.text}`} style={{ fontFamily: "var(--font-display)" }}>
-                {value}
-                <span className="ml-1 text-base font-semibold text-slate-500">
-                    {unit}
-                </span>
-            </h2>
         </motion.div>
     );
 };

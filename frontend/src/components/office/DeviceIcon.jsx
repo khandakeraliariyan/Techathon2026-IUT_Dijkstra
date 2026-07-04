@@ -1,13 +1,10 @@
 import { FaLightbulb, FaFan } from "react-icons/fa";
 
 const DeviceIcon = ({ device }) => {
-
     const isOn = device.status;
 
     if (device.type === "Light") {
-
         return (
-
             <FaLightbulb
                 className={`
                     text-4xl
@@ -19,13 +16,10 @@ const DeviceIcon = ({ device }) => {
                     }
                 `}
             />
-
         );
-
     }
 
     return (
-
         <FaFan
             className={`
                 text-4xl
@@ -37,10 +31,8 @@ const DeviceIcon = ({ device }) => {
                     : "text-slate-600"
                 }
             `}
-        />
-
+            />
     );
-
 };
 
 export default DeviceIcon;

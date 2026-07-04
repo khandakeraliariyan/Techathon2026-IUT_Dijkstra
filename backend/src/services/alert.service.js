@@ -23,6 +23,25 @@ class AlertService {
         );
     }
 
+    async resolveAfterHoursForDevice(device) {
+        const populatedDevice = device.room?.name
+            ? device
+            : await device.populate("room");
+
+        const message =
+            `${populatedDevice.name} in ${populatedDevice.room.name} is still ON.`;
+
+        return await Alert.findOneAndUpdate(
+            {
+                type: "AFTER_HOURS",
+                message,
+                resolved: false,
+            },
+            { resolved: true },
+            { new: true }
+        );
+    }
+
     async checkAlerts() {
         await this.checkAfterHours();
         await this.checkRoomActivity();

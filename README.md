@@ -6,15 +6,6 @@ Smart Office Energy Monitoring System is a full-stack web application for monito
 
 The project was built for the IUT RS Techathon. It combines a React dashboard with a Node.js backend, MongoDB persistence, Socket.IO live updates, background simulation jobs, and optional Gemini-powered AI summaries.
 
-## Project Links
-
-- Live demo:
-- Video demo:
-- Presentation:
-- Repository:
-- Backend deployment:
-- Frontend deployment:
-
 ## Problem Statement
 
 Modern offices often waste electricity because lights, fans, air conditioners, and other devices remain active when rooms are empty or when usage patterns are inefficient. Facility teams need a simple way to observe device activity, understand room-level power consumption, identify unusual usage, and respond to alerts quickly.
@@ -157,21 +148,7 @@ Smart_Office_Energy_Monitor_System/
   LICENSE
 ```
 
-## Screenshots
 
-### Dashboard
-
-
-### Device Monitoring
-
-
-### Analytics
-
-
-### Alerts
-
-
-### AI Insights
 
 
 ## Prerequisites
@@ -464,35 +441,6 @@ Manual testing checklist:
 Automated tests:
 
 
-## Deployment
-
-### Frontend Deployment
-
-- Platform:
-- Build command:
-- Output directory:
-- Environment variables:
-
-### Backend Deployment
-
-- Platform:
-- Start command:
-- Environment variables:
-- Database provider:
-
-### Database Deployment
-
-- Provider:
-- Connection string location:
-
-## Challenges Faced
-
-- 
-
-## What We Learned
-
-- 
-
 ## Future Improvements
 
 - Authentication and authorization
@@ -507,18 +455,6 @@ Automated tests:
 - Exportable analytics reports
 - Admin panel for room and device management
 
-## Team
-
-| Name | Role | GitHub/LinkedIn |
-| --- | --- | --- |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-
-## Contributors
-
-- 
 
 ## License
 

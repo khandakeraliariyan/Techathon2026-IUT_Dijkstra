@@ -7,15 +7,23 @@ const DeviceGrid = ({
 
     return (
 
-        <section>
+        <section className="space-y-5">
 
-            <h2 className="text-2xl font-bold mb-6">
+            <div className="flex items-end justify-between gap-4">
+                <div>
+                    <h2 className="text-xl font-semibold tracking-tight text-slate-50 sm:text-2xl">
+                        Devices
+                    </h2>
+                    <p className="mt-1 text-sm text-slate-400">
+                        Monitor and control every connected device
+                    </p>
+                </div>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-400">
+                    {devices.length} devices
+                </span>
+            </div>
 
-                Devices
-
-            </h2>
-
-            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
 
                 {devices.map(device => (
 
